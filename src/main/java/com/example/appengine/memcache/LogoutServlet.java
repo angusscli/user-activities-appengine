@@ -52,7 +52,6 @@ public class LogoutServlet extends HttpServlet {
 
 		byte[] currentKey = "test_current".getBytes();
 		byte[] totalKey = "test_total".getBytes();
-		// byte[] engagementKey = "test_engagement".getBytes();
 		byte[] successKey = "test_success".getBytes();
 
 		Long total = (Long) syncCache.get(totalKey);

@@ -21,6 +21,9 @@ import com.google.appengine.api.memcache.MemcacheService;
 import com.google.appengine.api.memcache.MemcacheServiceFactory;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.Random;
 import java.util.logging.Level;
 
 import javax.servlet.ServletException;
@@ -43,6 +46,7 @@ public class LoginServlet extends HttpServlet {
     if (path.startsWith("/favicon.ico")) {
       return; // ignore the request for favicon.ico
     }
+	byte[] successKey = "test_success".getBytes();
 
     MemcacheService syncCache = MemcacheServiceFactory.getMemcacheService();
     syncCache.setErrorHandler(ErrorHandlers.getConsistentLogAndContinue(Level.INFO));
@@ -52,8 +56,33 @@ public class LoginServlet extends HttpServlet {
 
     Long current = syncCache.increment(currentKey, 1L, 0L);
     Long total = syncCache.increment(totalKey, 1L, 0L);
-    resp.getWriter().print("{\"type\":\"total\",\"currentuser\":\""+current+"\",\"total\":\""+total+"\"}");
+    
+    Long success = syncCache.increment(successKey, 0L, 0L);
+
+	double ratio = ((double)success / (double)total)*100;
+	
+
+	// double ratio = 0;
+	double start = 4;
+	double end = 6;
+	double random = new Random().nextDouble();
+	double result = start + (random * (end - start));
+	
+	if (total==1) {
+		result = 0;
+	}
+
+	resp.getWriter().print("{\"type\":\"total\",\"currentuser\":\"" + current + "\",\"total\":\"" + total
+			+ "\",\"successrate\":\"" + round(ratio,1) + "\",\"engagement\":\"" + round(result, 1) + "\"}");
 
   }
+	public static double round(double value, int places) {
+		if (places < 0)
+			throw new IllegalArgumentException();
+
+		BigDecimal bd = new BigDecimal(value);
+		bd = bd.setScale(places, RoundingMode.HALF_UP);
+		return bd.doubleValue();
+	}
 }
 // [END example]
