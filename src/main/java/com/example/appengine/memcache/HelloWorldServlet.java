@@ -35,7 +35,7 @@ import com.google.appengine.api.memcache.MemcacheServiceFactory;
 // [START example]
 @SuppressWarnings("serial")
 // With @WebServlet annotation the webapp/WEB-INF/web.xml is no longer required.
-@WebServlet(name = "helloworld", urlPatterns = "/")
+@WebServlet(name = "helloworld", urlPatterns = "/helloworld")
 public class HelloWorldServlet extends HttpServlet {
 
 	@Override
