@@ -44,6 +44,8 @@ public class HelloWorldServlet extends HttpServlet {
 		if (path.startsWith("/favicon.ico")) {
 			return; // ignore the request for favicon.ico
 		}
+		
+		
 
 		resp.getWriter().print("helloworld");
 	}

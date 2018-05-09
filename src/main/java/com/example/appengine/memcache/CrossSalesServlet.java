@@ -16,6 +16,14 @@
 
 package com.example.appengine.memcache;
 
+
+
+import com.google.appengine.api.memcache.ErrorHandlers;
+
+import com.google.appengine.api.memcache.MemcacheService;
+import com.google.appengine.api.memcache.MemcacheServiceFactory;
+
+
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -27,10 +35,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.google.appengine.api.memcache.ErrorHandlers;
-import com.google.appengine.api.memcache.MemcacheService;
-import com.google.appengine.api.memcache.MemcacheServiceFactory;
 
 // [START example]
 @SuppressWarnings("serial")
@@ -72,8 +76,11 @@ public class CrossSalesServlet extends HttpServlet {
 			double end = 6;
 			double random = new Random().nextDouble();
 			double result = start + (random * (end - start));
-			resp.getWriter().print("{\"type\":\"crosssales\",\"currentuser\":\"" + current + "\",\"total\":\"" + total
-					+ "\",\"successrate\":\"" + round(ratio,1) + "\",\"engagement\":\"" + round(result, 1) + "\"}");
+			
+			String messge = "{\"type\":\"crosssales\",\"currentuser\":\"" + current + "\",\"total\":\"" + total
+					+ "\",\"successrate\":\"" + round(ratio,1) + "\",\"engagement\":\"" + round(result, 1) + "\"}";
+			
+			resp.getWriter().print(messge);
 		} else {
 			resp.getWriter().print("{\"type\":\"empty\"}");
 

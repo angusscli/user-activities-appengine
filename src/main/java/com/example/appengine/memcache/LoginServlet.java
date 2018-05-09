@@ -72,8 +72,18 @@ public class LoginServlet extends HttpServlet {
 		result = 0;
 	}
 
-	resp.getWriter().print("{\"type\":\"total\",\"currentuser\":\"" + current + "\",\"total\":\"" + total
-			+ "\",\"successrate\":\"" + round(ratio,1) + "\",\"engagement\":\"" + round(result, 1) + "\"}");
+	String message = "{\"type\":\"total\",\"currentuser\":\"" + current + "\",\"total\":\"" + total
+			+ "\",\"successrate\":\"" + round(ratio,1) + "\",\"engagement\":\"" + round(result, 1) + "\"}";
+	
+	
+	try {
+		UserPublisher.publish(message);
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	
+	resp.getWriter().print(message);
 
   }
 	public static double round(double value, int places) {

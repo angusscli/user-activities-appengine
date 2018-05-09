@@ -22,15 +22,17 @@ import java.math.RoundingMode;
 import java.util.Random;
 import java.util.logging.Level;
 
+
+
+import com.google.appengine.api.memcache.ErrorHandlers;
+import com.google.appengine.api.memcache.MemcacheService;
+import com.google.appengine.api.memcache.MemcacheServiceFactory;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.google.appengine.api.memcache.ErrorHandlers;
-import com.google.appengine.api.memcache.MemcacheService;
-import com.google.appengine.api.memcache.MemcacheServiceFactory;
 
 // [START example]
 @SuppressWarnings("serial")
@@ -68,8 +70,16 @@ public class LogoutServlet extends HttpServlet {
 			double end = 6;
 			double random = new Random().nextDouble();
 			double result = start + (random * (end - start));
-			resp.getWriter().print("{\"type\":\"total\",\"currentuser\":\"" + current + "\",\"total\":\"" + total
-					+ "\",\"successrate\":\"" + round(ratio,1) + "\",\"engagement\":\"" + round(result, 1) + "\"}");
+			String message = "{\"type\":\"total\",\"currentuser\":\"" + current + "\",\"total\":\"" + total
+					+ "\",\"successrate\":\"" + round(ratio,1) + "\",\"engagement\":\"" + round(result, 1) + "\"}";
+			try {
+				UserPublisher.publish(message);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			resp.getWriter().print(message);
 		} else {
 			resp.getWriter().print("{\"type\":\"empty\"}");
 
