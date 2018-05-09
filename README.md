@@ -8,8 +8,7 @@
   
 ### Deploying
 
-	$ mvn appengine:update ??
-    $ mvn appengine:deploy ??
+	$ mvn appengine:update
     
 ### Running locally
 
