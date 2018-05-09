@@ -35,8 +35,8 @@ import com.google.appengine.api.memcache.MemcacheServiceFactory;
 // [START example]
 @SuppressWarnings("serial")
 // With @WebServlet annotation the webapp/WEB-INF/web.xml is no longer required.
-@WebServlet(name = "logout", urlPatterns = "/logout")
-public class LogoutServlet extends HttpServlet {
+@WebServlet(name = "crosssales", urlPatterns = "/crosssales")
+public class CrossSalesServlet extends HttpServlet {
 
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
@@ -57,10 +57,14 @@ public class LogoutServlet extends HttpServlet {
 		Long total = (Long) syncCache.get(totalKey);
 
 		if (total != null) {
-			Long current = syncCache.increment(currentKey, -1L, 0L);
+			Long current = syncCache.increment(currentKey, 0L, 0L);
 			Long success = 0L;
-			
-			success = syncCache.increment(successKey, 0L, 0L);
+
+			if ("1".equals(successParam)) {
+				success = syncCache.increment(successKey, 1L, 0L);
+			} else {
+				success = syncCache.increment(successKey, 0L, 0L);
+			}
 
 			double ratio = ((double)success / (double)total)*100;
 			// double ratio = 0;
@@ -68,7 +72,7 @@ public class LogoutServlet extends HttpServlet {
 			double end = 6;
 			double random = new Random().nextDouble();
 			double result = start + (random * (end - start));
-			resp.getWriter().print("{\"type\":\"total\",\"currentuser\":\"" + current + "\",\"total\":\"" + total
+			resp.getWriter().print("{\"type\":\"crosssales\",\"currentuser\":\"" + current + "\",\"total\":\"" + total
 					+ "\",\"successrate\":\"" + round(ratio,1) + "\",\"engagement\":\"" + round(result, 1) + "\"}");
 		} else {
 			resp.getWriter().print("{\"type\":\"empty\"}");
