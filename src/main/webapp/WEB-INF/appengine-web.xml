@@ -17,12 +17,12 @@
   <runtime>java8</runtime>
   <application>techfest-hackathon-1</application>
   <version>4</version>  
-  <threadsafe>true</threadsafe>
+  <threadsafe>true</threadsafe><!-- 
   <service>api</service>
-  
+   -->
   <instance-class>B8</instance-class>
   <manual-scaling>
-    <instances>5</instances>
+    <instances>1</instances>
   </manual-scaling>
 </appengine-web-app>
 
