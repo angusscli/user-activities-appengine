@@ -14,13 +14,19 @@ import com.google.pubsub.v1.PubsubMessage;
 
 public class UserPublisher {
 
-	private final static String PROJECT_ID = "traded-risk-project-1";
-	private final static String TOPIC_ID = "user-topic";
+	private final static String PROJECT_ID = "techfest-hackathon-1";
+	
+	public final static String TXN_TOPIC = "txn-topic";
 
 	private final static Logger log = Logger.getLogger(UserPublisher.class.getName());
-
+	
 	public static void publish(String message) throws Exception {
-		ProjectTopicName topicName = ProjectTopicName.of(PROJECT_ID, TOPIC_ID);
+		publish(message, "user-topic");
+	}
+	
+
+	public static void publish(String message, String topicId) throws Exception {
+		ProjectTopicName topicName = ProjectTopicName.of(PROJECT_ID, topicId);
 
 		Publisher publisher = null;
 		try {

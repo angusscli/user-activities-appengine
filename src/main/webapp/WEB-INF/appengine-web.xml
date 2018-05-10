@@ -15,9 +15,14 @@
 <!-- [END_EXCLUDE] -->
 <appengine-web-app xmlns="http://appengine.google.com/ns/1.0">
   <runtime>java8</runtime>
-  <application>traded-risk-project-1</application>
+  <application>techfest-hackathon-1</application>
   <version>4</version>  
   <threadsafe>true</threadsafe>
   <service>api</service>
+  
+  <instance-class>B8</instance-class>
+  <manual-scaling>
+    <instances>5</instances>
+  </manual-scaling>
 </appengine-web-app>
 
